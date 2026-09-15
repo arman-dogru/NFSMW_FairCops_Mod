@@ -1,0 +1,21 @@
+FairCops - building from source
+===============================
+
+The supplied FairCops.asi was built as a freestanding 32-bit MSVC-ABI PE DLL
+with Clang 17 + lld-link. It deliberately has no import table; Win32 functions
+are called through speed.exe's existing IAT.
+
+From a shell with clang++ and lld-link:
+
+  clang++ --target=i686-pc-windows-msvc -std=c++17 -O2 \
+    -fno-exceptions -fno-rtti -fno-stack-protector \
+    -ffreestanding -fno-builtin \
+    -c FairCops.cpp -o FairCops.obj
+
+  lld-link /dll /machine:x86 /nodefaultlib /subsystem:windows \
+    /entry:DllMain@12 /out:FairCops.asi FairCops.obj
+
+The source is tied intentionally to the verified retail v1.3 executable used by
+this build. Do not blindly change the hard-coded game addresses for another
+speed.exe; re-verify the hook site, vehicle vtable slots, cop AI layout, and
+AITarget function first.

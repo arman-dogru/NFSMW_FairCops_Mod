@@ -1,0 +1,62 @@
+FairCops v0.1-alpha - static compatibility inspection
+======================================================
+
+This report is a static inspection of the exact files supplied by the user.
+It cannot prove runtime compatibility with pattern-based hooks or dynamic
+patches, but it checks the specific FairCops hook surface for obvious direct
+collisions.
+
+speed.exe
+  size: 6,029,312 bytes
+  sha256: 80774c2e5d619b4f120b48d4462896fd504c263399d203a238769cffde1d253c
+
+NFSMWBartender.asi
+  size: 380,928 bytes
+  sha256: bf75680e3c1466c9ee31dd5f1c81e60c30c81b39511f54a1b8d88f07854ac883
+  direct little-endian references to OnTask CALL site 0x0043EF43: 0
+  direct little-endian references to UpdatePursuits 0x0043E8D0: 0
+
+NFSMWExtraOptions.asi
+  size: 278,528 bytes
+  sha256: 32bc3ae6c3f36218ae507b666d8fb816c2263fdb7819498286bca11537ec8ff2
+  direct little-endian references to OnTask CALL site 0x0043EF43: 0
+  direct little-endian references to UpdatePursuits 0x0043E8D0: 0
+
+NFSMWUnlimiter.asi
+  size: 669,184 bytes
+  sha256: f79053ee8c04e4f580a1c8829bde0d095cbaa6bf2da4eed152021d75f9c0f519
+  direct little-endian references to OnTask CALL site 0x0043EF43: 0
+  direct little-endian references to UpdatePursuits 0x0043E8D0: 0
+
+MWCrashFix.asi
+  size: 16,384 bytes
+  sha256: 99e7ac8e2517ba634cfe4037430fa144cbd25dac46123d10601e048d043452a1
+  direct little-endian references to OnTask CALL site 0x0043EF43: 0
+  direct little-endian references to UpdatePursuits 0x0043E8D0: 0
+
+NFSMostWanted.WidescreenFix.asi
+  size: 6,694,976 bytes
+  sha256: f3a7f8c04db295154e10987303a7237a8dc70e2ba944d38a79f895ad1f570dd1
+  direct little-endian references to OnTask CALL site 0x0043EF43: 0
+  direct little-endian references to UpdatePursuits 0x0043E8D0: 0
+
+SpeedReflect.asi
+  size: 80,384 bytes
+  sha256: 3ef35d470c3b7e795157d65e78617c164eaafecf60493a797991629a70a54181
+  direct little-endian references to OnTask CALL site 0x0043EF43: 0
+  direct little-endian references to UpdatePursuits 0x0043E8D0: 0
+
+Hook-site verification in supplied speed.exe:
+  0x0043EF43 bytes: E8 88 F9 FF FF
+  decoded CALL target: 0x0043E8D0 (AICopManager::UpdatePursuits)
+
+Result:
+  None of the uploaded ASI files contains a direct 32-bit immediate reference
+  to 0x0043EF43 or 0x0043E8D0. FairCops therefore has no obvious direct-address
+  collision with the supplied Bartender, ExtraOptions, Unlimiter, MWCrashFix,
+  WidescreenFix, or SpeedReflect binaries at its chosen call site.
+
+Caveat:
+  Mods can locate code by byte pattern or patch related functions without
+  embedding these absolute addresses. FairCops therefore validates/chains the
+  live CALL instruction at load time and refuses to overwrite non-CALL patches.
